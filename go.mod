@@ -1,6 +1,6 @@
 module github.com/sqlc-dev/sqlc
 
-go 1.21
+go 1.22.2
 
 require (
 	github.com/antlr4-go/antlr/v4 v4.13.0

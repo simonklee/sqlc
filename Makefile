@@ -18,6 +18,16 @@ test-examples:
 build-endtoend:
 	cd ./internal/endtoend/testdata && go build ./...
 
+test-managed:
+	docker-compose up -d --remove-orphans
+
+	export MYSQL_SERVER_URI="root:mysecretpassword@tcp(localhost:3306)/dinotest?multiStatements=true&parseTime=true"; \
+	export POSTGRESQL_SERVER_URI="postgres://postgres:mysecretpassword@localhost:5432/postgres?sslmode=disable"; \
+
+	go test -tags=example ./...
+
+	docker-compose down --remove-orphans
+
 test-ci: test-examples build-endtoend vet
 
 sqlc-dev:

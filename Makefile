@@ -9,6 +9,9 @@ install:
 test:
 	go test ./...
 
+test-managed:
+	MYSQL_SERVER_URI="invalid" POSTGRESQL_SERVER_URI="postgres://postgres:mysecretpassword@localhost:5432/postgres" go test -v ./...
+
 vet:
 	go vet ./...
 
@@ -38,6 +41,9 @@ sqlc-pg-gen:
 
 sqlc-gen-json:
 	go build -o ~/bin/sqlc-gen-json ./cmd/sqlc-gen-json
+
+test-json-process-plugin:
+	go build -o ~/bin/test-json-process-plugin ./scripts/test-json-process-plugin/
 
 start:
 	docker compose up -d

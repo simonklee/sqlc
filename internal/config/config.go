@@ -59,11 +59,18 @@ const (
 type Config struct {
 	Version   string               `json:"version" yaml:"version"`
 	Cloud     Cloud                `json:"cloud" yaml:"cloud"`
+	Servers   []Server             `json:"servers" yaml:"servers"`
 	SQL       []SQL                `json:"sql" yaml:"sql"`
 	Overrides Overrides            `json:"overrides,omitempty" yaml:"overrides"`
 	Plugins   []Plugin             `json:"plugins" yaml:"plugins"`
 	Rules     []Rule               `json:"rules" yaml:"rules"`
 	Options   map[string]yaml.Node `json:"options" yaml:"options"`
+}
+
+type Server struct {
+	Name   string `json:"name,omitempty" yaml:"name"`
+	Engine Engine `json:"engine,omitempty" yaml:"engine"`
+	URI    string `json:"uri" yaml:"uri"`
 }
 
 type Database struct {
@@ -82,7 +89,8 @@ type Plugin struct {
 	Name    string   `json:"name" yaml:"name"`
 	Env     []string `json:"env" yaml:"env"`
 	Process *struct {
-		Cmd string `json:"cmd" yaml:"cmd"`
+		Cmd    string `json:"cmd" yaml:"cmd"`
+		Format string `json:"format" yaml:"format"`
 	} `json:"process" yaml:"process"`
 	WASM *struct {
 		URL    string `json:"url" yaml:"url"`

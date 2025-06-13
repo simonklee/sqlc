@@ -50,7 +50,7 @@ Each mapping in the `sql` collection has the following keys:
   - A mapping to configure database connections. See [database](#database) for the supported keys.
 - `rules`:
   - A collection of rule names to run via `sqlc vet`. See [rules](#rules) for configuration options.
-- `analzyer`:
+- `analyzer`:
   - A mapping to configure query analysis. See [analyzer](#analyzer) for the supported keys.
 - `strict_function_checks`
   - If true, return an error if a called SQL function does not exist. Defaults to `false`.
@@ -135,6 +135,8 @@ The `gen` mapping supports the following keys:
   - Output directory for generated code.
 - `sql_package`:
   - Either `pgx/v4`, `pgx/v5` or `database/sql`. Defaults to `database/sql`.
+- `sql_driver`:
+  - Either `github.com/jackc/pgx/v4`, `github.com/jackc/pgx/v5`, `github.com/lib/pq` or `github.com/go-sql-driver/mysql`. No defaults. Required if query annotation `:copyfrom` is used.
 - `emit_db_tags`:
   - If true, add DB tags to generated structs. Defaults to `false`.
 - `emit_prepared_queries`:
@@ -271,6 +273,8 @@ Each mapping in the `plugins` collection has the following keys:
 - `process`: A mapping with a single `cmd` key
   - `cmd`:
     - The executable to call when using this plugin
+  - `format`:
+    - The format expected. Supports `json` and `protobuf` formats. Defaults to `protobuf`.
 - `wasm`: A mapping with a two keys `url` and `sha256`
   - `url`:
     - The URL to fetch the WASM file. Supports the `https://` or `file://` schemes.

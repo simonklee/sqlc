@@ -11,6 +11,44 @@ sqlc generates **type-safe code** from SQL. Here's how it works:
 
 Check out [an interactive example](https://play.sqlc.dev/) to see it in action, and the [introductory blog post](https://conroy.org/introducing-sqlc) for the motivation behind sqlc.
 
+## Streaming support
+
+This fork contains streaming support using an `:iter` keyword. The keyword is implemented
+for both Go and Kotlin generated code.
+
+Example `:iter` query:
+
+```
+-- name: StreamAuthors :iter
+SELECT * from authors;
+```
+
+Will produce query functions like:
+
+`StreamAuthors(ctx context.Context, iter func(author Author) error) error`
+
+The iter function will be called for each row in the sql result. You are responsible for
+the actual streaming within the passed function. Example:
+
+```
+w := initSomeWriter()
+iter := func(author Author) error {
+    err = w.Write(author)
+    if err != nil {
+        return err
+    }
+    return nil
+}
+
+err := queries.StreamAuthors(ctx, iter)
+```
+
+Also note that if the iter function return an error, the streaming query will close and return the error.
+
+### Building this fork
+
+Clone and run `CGO_ENABLED=0 go build ./cmd/sqlc/main.go` from the project root.
+
 ## Overview
 
 - [Documentation](https://docs.sqlc.dev)
